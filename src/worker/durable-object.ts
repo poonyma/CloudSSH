@@ -184,12 +184,13 @@ export class SSHSessionDO {
       await socket.opened;
 
       const strictVerify = this.env.STRICT_HOST_KEY_VERIFY !== 'false';
+      const debugMode = this.env.DEBUG_MODE === 'true';
       const pendingSize = this.pendingTerminalSizes.get(ws);
       if (pendingSize) {
         config.cols = pendingSize.cols;
         config.rows = pendingSize.rows;
       }
-      const session = new SSHSession(ws, socket, config, strictVerify);
+      const session = new SSHSession(ws, socket, config, strictVerify, debugMode);
       this.sessions.set(ws, session);
       this.pendingTerminalSizes.delete(ws);
 

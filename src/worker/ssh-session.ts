@@ -84,17 +84,20 @@ export class SSHSession {
   private keepaliveInterval: ReturnType<typeof setInterval> | null = null;
   private shellReadyTimeout: ReturnType<typeof setTimeout> | null = null;
   private terminalSize: TerminalSize = { cols: 120, rows: 40 };
+  private debugMode: boolean = false;
 
   constructor(
     ws: WebSocket,
     socket: any,
     config: SSHConnectionConfig,
-    strictHostKeyVerify: boolean = true
+    strictHostKeyVerify: boolean = true,
+    debugMode: boolean = false
   ) {
     this.ws = ws;
     this.socket = socket;
     this.config = config;
     this.strictHostKeyVerify = strictHostKeyVerify;
+    this.debugMode = debugMode;
 
     this.transport = new SSHTransport();
     this.packetParser = new SSHPacketParser();
@@ -995,8 +998,11 @@ export class SSHSession {
     } catch {}
   }
 
-  private sendDebug(_message: string): void {
-    // 调试日志已禁用
+  private sendDebug(message: string): void {
+    if (!this.debugMode) return;
+    try {
+      this.ws.send(JSON.stringify({ type: 'debug', message }));
+    } catch {}
   }
 
   close(normal: boolean = false): void {

@@ -69,6 +69,8 @@ export interface Env {
   BASE_URL?: string;
   // 主机密钥验证严格模式（默认 true，设为 false 可跳过签名验证失败）
   STRICT_HOST_KEY_VERIFY?: string;
+  // 调试模式（设为 true 启用调试日志输出到前端）
+  DEBUG_MODE?: string;
 }
 
 export interface UserInfo {

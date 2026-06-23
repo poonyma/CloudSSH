@@ -240,6 +240,9 @@ export class SSHTerminal {
             case 'error':
               this.terminal.writeln(`\x1b[31m[!] ${msg.message}\x1b[0m`);
               break;
+            case 'debug':
+              this.terminal.writeln(`\x1b[90m[DEBUG] ${msg.message}\x1b[0m`);
+              break;
             case 'pong':
               break;
           }
